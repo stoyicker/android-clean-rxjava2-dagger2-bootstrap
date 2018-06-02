@@ -1,0 +1,63 @@
+buildscript {
+    apply from: "../_buildsystem/buildscript.gradle"
+    repositories project.ext.classpathRepositories
+    dependencies project.ext.classpathDependencies
+}
+
+apply from: "../_buildsystem/configurations.gradle"
+apply from: "../_buildsystem/dependencies.gradle"
+apply from: "../_buildsystem/properties.gradle"
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "org.jmailen.kotlinter"
+
+android {
+    compileSdkVersion project.ext.androidCompileSdkVersion
+    buildToolsVersion project.ext.androidBuildToolsVersion
+    defaultConfig {
+        versionCode project.ext.androidVersionCode
+        versionName project.ext.androidVersionName
+        minSdkVersion project.ext.androidMinSdkVersion
+        targetSdkVersion project.ext.androidTargetSdkVersion
+        buildConfigField "String", "PLATFORM_ANDROID", "\"android\""
+        buildConfigField "String", "TINDER_VERSION_NAME", "\"8.4.1\""
+        buildConfigField "String", "TINDER_API_LOCALE", "\"en\""
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation": "${rootProject.projectDir}/_assets/db".toString()
+                ]
+            }
+        }
+    }
+    dexOptions {
+        preDexLibraries false
+        javaMaxHeapSize "8g"
+    }
+    lintOptions {
+        abortOnError true
+        absolutePaths true
+        checkAllWarnings true
+        htmlOutput = new File("$project.ext.staticAnalysisReportTarget/$project.name/lint.html")
+        quiet false
+        warningsAsErrors true
+    }
+    packagingOptions {
+        exclude "META-INF/services/javax.annotation.processing.Processor"
+    }
+    sourceSets.forEach {
+        it.java.srcDirs = ["src/$it.name/kotlin"]
+    }
+}
+dependencies {
+    implementation project(":domain")
+    kapt project.ext.annotationProcessorDataDependencies
+    implementation project.ext.implementationDependencies
+    implementation project.ext.implementationDataDependencies
+    compileOnly project.ext.providedDataDependencies
+    androidTestUtil project.ext.androidTestUtilDependencies
+    androidTestImplementation project.ext.androidTestImplementationDependencies
+    testImplementation project.ext.testImplementationDependencies
+}

@@ -1,0 +1,77 @@
+buildscript {
+    apply from: "../_buildsystem/buildscript.gradle"
+    repositories project.ext.classpathRepositories
+    dependencies project.ext.classpathDependencies
+}
+
+apply from: "../_buildsystem/buildscript.gradle"
+apply from: "../_buildsystem/configurations.gradle"
+apply from: "../_buildsystem/dependencies.gradle"
+apply from: "../_buildsystem/properties.gradle"
+
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "org.jmailen.kotlinter"
+apply plugin: "kotlin-android-extensions"
+
+android {
+    compileSdkVersion project.ext.androidCompileSdkVersion
+    buildToolsVersion project.ext.androidBuildToolsVersion
+    signingConfigs {
+        dummy1 {
+            storeFile new File("dummy1.keystore")
+            storePassword("dummy1")
+            keyAlias("dummy1")
+            keyPassword("dummy1")
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.dummy1
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+    defaultConfig {
+        applicationId project.ext.androidApplicationIdBase
+        versionCode project.ext.androidVersionCode
+        versionName project.ext.androidVersionName
+        minSdkVersion project.ext.androidMinSdkVersion
+        targetSdkVersion project.ext.androidTargetSdkVersion
+        testInstrumentationRunner "app.AndroidTestApplicationAndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        preDexLibraries false
+        javaMaxHeapSize "8g"
+    }
+    lintOptions {
+        abortOnError true
+        absolutePaths true
+        checkAllWarnings true
+        htmlOutput = new File("$project.ext.staticAnalysisReportTarget/$project.name/lint.html")
+        quiet false
+        warningsAsErrors true
+    }
+    sourceSets.forEach {
+        it.java.srcDirs = ["src/$it.name/kotlin"]
+    }
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+    }
+}
+dependencies {
+    implementation project(":data") // This is only for the ContentProvider. Do NOT import data in src!
+    implementation project(":domain")
+    implementation project.ext.implementationDependencies
+    kapt project.ext.annotationProcessorAppDependencies
+    implementation project.ext.implementationAppDependencies
+    androidTestUtil project.ext.androidTestUtilDependencies
+    androidTestImplementation project.ext.androidTestImplementationDependencies
+    testImplementation project.ext.testImplementationDependencies
+}

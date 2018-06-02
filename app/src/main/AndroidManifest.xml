@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="###APPLICATION_ID_BASE###">
+    <uses-permission
+        android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="false"
+        android:icon="@null"
+        android:label="@string/app_label"
+        android:resizeableActivity="true">
+        <activity
+            android:name="app.splash.SplashActivity"
+            android:theme="@style/AppTheme.SplashTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+    </application>
+</manifest>

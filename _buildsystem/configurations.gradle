@@ -1,0 +1,18 @@
+final def archRuntimeVersion = "1.1.1"
+final def kotlinVersion = "1.2.41"
+final def supportLibraryVersion = "27.1.1"
+configurations.all {
+    resolutionStrategy {
+        forcedModules = [
+                // Enforces the same version of Kotlin for all Kotlin libraries
+                "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+                "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+                // Enforces the same version for the all support libraries
+                "com.android.support:appcompat-v7:$supportLibraryVersion",
+                "com.android.support:cardview-v7:$supportLibraryVersion",
+                "com.android.support:customtabs:$supportLibraryVersion",
+                "com.android.support:support-v4:$supportLibraryVersion",
+                "android.arch.lifecycle:runtime:$archRuntimeVersion"
+        ]
+    }
+}

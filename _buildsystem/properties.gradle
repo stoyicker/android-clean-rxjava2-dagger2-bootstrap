@@ -1,0 +1,11 @@
+ext {
+    androidCompileSdkVersion = 27
+    androidMinSdkVersion = "###MIN_SDK_VERSION###"
+    androidTargetSdkVersion = 27
+    androidBuildToolsVersion = "27.0.3"
+    androidVersionCode = Integer.MAX_VALUE
+    androidVersionName = String.valueOf(androidVersionCode)
+    androidApplicationIdBase = "###APPLICATION_ID_BASE###"
+    staticAnalysisReportTarget = project.buildDir.absolutePath + "/staticAnalysisReport"
+    javaVersion = JavaVersion.VERSION_1_8
+}

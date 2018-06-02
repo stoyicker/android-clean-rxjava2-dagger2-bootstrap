@@ -1,0 +1,35 @@
+language: ruby
+sudo: required
+git:
+  depth: 1
+branches:
+  except:
+    - "/^[0-9]/"
+services:
+  - docker
+before_install:
+  - |
+    if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
+      echo "Do not open PRs against master; merge dev into master locally and push instead."
+      exit 1
+    fi
+  - export DOCKER_IMAGE_TAG=8964b03561271efcdf5de2bf039fd9c3bd8809a5
+  - export TERM=dumb
+  - docker pull stoyicker/docker-android:${DOCKER_IMAGE_TAG}
+  - docker tag stoyicker/docker-android:${DOCKER_IMAGE_TAG} ${TRAVIS_REPO_SLUG}
+  - export CONTAINER=$(docker run -dt -p 127.0.0.1:80:4567 -e TERM)
+  - docker exec -t $CONTAINER /bin/sh -c "mkdir -p /root/${TRAVIS_REPO_SLUG}"
+  - docker cp ./ $CONTAINER:root/${TRAVIS_REPO_SLUG}
+env:
+  matrix:
+  - TASK="\"./gradlew :app:clean :app:build :app:check --no-daemon\""
+  - TASK="\"./gradlew :domain:clean :domain:build :domain:check --no-daemon\""
+  - TASK="\"./gradlew :data:clean :data:build :data:check --no-daemon\""
+script:
+  - docker exec -it $CONTAINER /bin/sh -c "cd root/${TRAVIS_REPO_SLUG}; ./_ci/script.sh ${TASK}"
+notifications:
+  email:
+    recipients:
+      - jorge.diazbenitosoriano@gmail.com
+    on_success: change
+    on_failure: always

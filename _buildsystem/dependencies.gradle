@@ -1,0 +1,74 @@
+final def architectureComponentsVersion = "1.1.1"
+final def constraintLayoutVersion = "1.1.0"
+final def daggerVersion = "2.16"
+final def espressoVersion = "3.0.2"
+final def jsr250Version = "1.0"
+final def junitVersion = "4.12"
+final def kotlinVersion = "1.2.41"
+final def lottieVersion = "2.5.5"
+final def mockitoVersion = "2.18.3"
+final def moshiVersion = "1.6.0"
+final def retrofitVersion = "2.4.0"
+final def rxAndroid2Version = "2.0.2"
+final def rxJava2Version = "2.1.14"
+final def supportLibraryVersion = "27.1.1"
+final def testOrchestratorVersion = "1.0.2"
+ext {
+    implementationDependencies = [
+            "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    ]
+    annotationProcessorAppDependencies = [
+            "com.google.dagger:dagger-compiler:$daggerVersion"
+    ]
+    implementationAppDependencies = [
+            "io.reactivex.rxjava2:rxandroid:$rxAndroid2Version",
+            "com.google.dagger:dagger:$daggerVersion",
+            "com.airbnb.android:lottie:$lottieVersion",
+            "com.android.support:design:$supportLibraryVersion",
+            "com.android.support:preference-v7:$supportLibraryVersion",
+            "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    ]
+    annotationProcessorDomainDependencies = [
+            "javax.annotation:jsr250-api:$jsr250Version"
+    ]
+    implementationDomainDependencies = [
+            "io.reactivex.rxjava2:rxjava:$rxJava2Version"
+    ]
+    providedDomainDependencies = [
+            "com.android.support:support-annotations:$supportLibraryVersion"
+    ]
+    annotationProcessorDataDependencies = [
+            "com.google.dagger:dagger-compiler:$daggerVersion",
+            "android.arch.persistence.room:compiler:$architectureComponentsVersion"
+    ]
+    implementationDataDependencies = [
+            "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+            "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
+            "com.google.dagger:dagger:$daggerVersion",
+            "com.android.support:support-v4:$supportLibraryVersion",
+            "com.squareup.moshi:moshi-adapters:$moshiVersion",
+            "android.arch.persistence.room:runtime:$architectureComponentsVersion",
+            "android.arch.lifecycle:runtime:$architectureComponentsVersion",
+            "android.arch.lifecycle:extensions:$architectureComponentsVersion"
+    ]
+    providedDataDependencies = [
+            "com.android.support:support-annotations:$supportLibraryVersion"
+    ]
+    androidTestUtilDependencies = [
+            "com.android.support.test:orchestrator:$testOrchestratorVersion"
+    ]
+    androidTestImplementationDependencies = [
+            "com.android.support.test.espresso:espresso-core:$espressoVersion",
+            "org.mockito:mockito-android:$mockitoVersion"
+    ]
+    testImplementationDependencies = [
+            "org.mockito:mockito-core:$mockitoVersion",
+            "junit:junit:$junitVersion"
+    ]
+}
+repositories {
+    google()
+    jcenter()
+}
